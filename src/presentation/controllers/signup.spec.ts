@@ -47,7 +47,7 @@ describe('SignUp Controller', () => {
     expect(httpResponse.body).toEqual(new MissingParamError('cpf'))
   })
 
-  test('Should return 400 if no cpf is provided', () => {
+  test('Should return 400 if no password is provided', () => {
     const sut = new SignUpController()
     const httpRequest = {
       body: {
@@ -60,5 +60,20 @@ describe('SignUp Controller', () => {
     const httpResponse = sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.body).toEqual(new MissingParamError('password'))
+  })
+
+  test('Should return 400 if no password confirmation is provided', () => {
+    const sut = new SignUpController()
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        email: 'any_email',
+        cpf: 'any_cpf',
+        password: 'any_password'
+      }
+    }
+    const httpResponse = sut.handle(httpRequest)
+    expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.body).toEqual(new MissingParamError('passwordConfirmation'))
   })
 })
