@@ -16,6 +16,7 @@ services:
     command: npm start
     volumes:
       - ./dist:/usr/src/oboticario/dist
+      - ./package.json:/usr/src/oboticario/package.json
     ports: 
       - "3000:3000"
     links: 
