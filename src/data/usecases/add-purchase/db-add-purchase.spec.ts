@@ -41,4 +41,11 @@ describe('DbPurchase Usecase', () => {
     await sut.add(purchaseData)
     expect(addSpy).toHaveBeenCalledWith(purchaseData)
   })
+
+  test('Should call AddPurchaseRepository with corrects values', async () => {
+    const { sut, addPurchaseRepositoryStub } = makeSut()
+    jest.spyOn(addPurchaseRepositoryStub, 'add').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    const promise = sut.add(makeFakePurchaseData())
+    await expect(promise).rejects.toThrow()
+  })
 })
