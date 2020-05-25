@@ -7,8 +7,20 @@ export class PurchaseController implements Controller {
     const requiredField = ['code', 'value', 'cpf', 'date']
     for (const field of requiredField) {
       if (!httpRequest.body[field]) {
-        return await badRequest(new MissingParamError(field))
+        return badRequest(new MissingParamError(field))
       }
+    }
+    const purchase = {
+      body: {
+        code: 'any_value',
+        value: 'any_value',
+        cpf: 'any_cpf',
+        date: 'any_date'
+      }
+    }
+    return await {
+      statusCode: 200,
+      body: purchase
     }
   }
 }
