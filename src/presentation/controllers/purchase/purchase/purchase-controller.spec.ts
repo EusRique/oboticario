@@ -1,5 +1,15 @@
 import { PurchaseController } from './purchase-controller'
 import { HttpRequest } from '../../../protocols'
+import { AddPurchase, PurchaseModel, AddPurchaseModel } from './purchase-controller-protocols'
+
+const makeAddPurchase = (): AddPurchase => {
+  class AddPurchaseStub implements AddPurchase {
+    async add (purchase: AddPurchaseModel): Promise<PurchaseModel> {
+      return new Promise(resolve => resolve(makeFakePurchase()))
+    }
+  }
+  return new AddPurchaseStub()
+}
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {
@@ -10,18 +20,41 @@ const makeFakeRequest = (): HttpRequest => ({
   }
 })
 
+const makeFakePurchase = (): PurchaseModel => ({
+  id: 'valid_id',
+  code: 'valid_code',
+  value: 'valid_value',
+  cpf: 'valid_cpf',
+  date: 'valid_date'
+})
+
 interface SutTypes {
   sut: PurchaseController
+  addPurchaseStub: AddPurchase
 }
 
 const makeSut = (): SutTypes => {
-  const sut = new PurchaseController()
+  const addPurchaseStub = makeAddPurchase()
+  const sut = new PurchaseController(addPurchaseStub)
   return {
-    sut
+    sut,
+    addPurchaseStub
   }
 }
 
 describe('Purchase Controller', () => {
+  test('Should call AddPurchase with correct values', async () => {
+    const { sut, addPurchaseStub } = makeSut()
+    const addSpy = jest.spyOn(addPurchaseStub, 'add')
+    await sut.handle(makeFakeRequest())
+    expect(addSpy).toHaveBeenCalledWith({
+      code: 'any_value',
+      value: 'any_value',
+      cpf: 'any_cpf',
+      date: 'any_date'
+    })
+  })
+
   test('Should return 400 if no code', async () => {
     const { sut } = makeSut()
     const httpRequest = {
@@ -81,7 +114,6 @@ describe('Purchase Controller', () => {
   test('Should return 200 if valid data is provided', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle(makeFakeRequest())
-    expect(httpResponse.statusCode).toBe(200)
-    expect(httpResponse.body).toEqual(makeFakeRequest())
+    expect(httpResponse.body).toEqual(makeFakePurchase())
   })
 })
