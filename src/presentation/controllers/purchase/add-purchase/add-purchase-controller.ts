@@ -1,10 +1,10 @@
-import { Controller, HttpRequest, HttpResponse } from './add-purchase-controller-protocols'
-import { Validation } from '../../../protocols'
+import { Controller, HttpRequest, HttpResponse, Validation, AddPurchase } from './add-purchase-controller-protocols'
 import { badRequest } from '../../../helpers/http/http-helpers'
 
 export class AddPurchaseController implements Controller {
   constructor (
-    private readonly validation: Validation
+    private readonly validation: Validation,
+    private readonly addPurchase: AddPurchase
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -12,6 +12,16 @@ export class AddPurchaseController implements Controller {
     if (error) {
       return badRequest(error)
     }
-    return new Promise(resolve => resolve(null))
+    const { code, value, cpf, percentage, cashbackAmount, status, date } = httpRequest.body
+    await this.addPurchase.add({
+      code,
+      value,
+      cpf,
+      percentage,
+      cashbackAmount,
+      status,
+      date
+    })
+    return null
   }
 }
