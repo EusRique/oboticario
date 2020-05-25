@@ -11,16 +11,32 @@ const makeFakePurchaseData = (): AddAPurchaseModel => ({
   date: 'any_date'
 })
 
+const makeAddPurchaseRepository = (): AddPurchaseRepository => {
+  class AddPurchaseRepositoryStub implements AddPurchaseRepository {
+    async add (purchaseData: AddAPurchaseModel): Promise<void> {
+      return new Promise(resolve => resolve())
+    }
+  }
+  return new AddPurchaseRepositoryStub()
+}
+
+interface SutTypes {
+  sut: DbAddPurchase
+  addPurchaseRepositoryStub: AddPurchaseRepository
+}
+const makeSut = (): SutTypes => {
+  const addPurchaseRepositoryStub = makeAddPurchaseRepository()
+  const sut = new DbAddPurchase(addPurchaseRepositoryStub)
+  return {
+    addPurchaseRepositoryStub,
+    sut
+  }
+}
+
 describe('DbPurchase Usecase', () => {
   test('Should call AddPurchaseRepository with corrects values', async () => {
-    class AddPurchaseRepositoryStub implements AddPurchaseRepository {
-      async add (purchaseData: AddAPurchaseModel): Promise<void> {
-        return new Promise(resolve => resolve())
-      }
-    }
-    const addPurchaseRepositoryStub = new AddPurchaseRepositoryStub()
+    const { sut, addPurchaseRepositoryStub } = makeSut()
     const addSpy = jest.spyOn(addPurchaseRepositoryStub, 'add')
-    const sut = new DbAddPurchase(addPurchaseRepositoryStub)
     const purchaseData = makeFakePurchaseData()
     await sut.add(purchaseData)
     expect(addSpy).toHaveBeenCalledWith(purchaseData)
