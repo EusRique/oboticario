@@ -1,5 +1,5 @@
 import { Controller, HttpRequest, HttpResponse, Validation, AddPurchase } from './add-purchase-controller-protocols'
-import { badRequest, serverError } from '../../../helpers/http/http-helpers'
+import { badRequest, serverError, noContent } from '../../../helpers/http/http-helpers'
 
 export class AddPurchaseController implements Controller {
   constructor (
@@ -23,7 +23,7 @@ export class AddPurchaseController implements Controller {
         status,
         date
       })
-      return null
+      return noContent()
     } catch (error) {
       return serverError(error)
     }
