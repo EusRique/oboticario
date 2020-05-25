@@ -1,6 +1,5 @@
-import { HttpRequest } from './add-purchase-controller-protocols'
+import { HttpRequest, Validation, AddPurchase, AddAPurchaseModel } from './add-purchase-controller-protocols'
 import { AddPurchaseController } from './add-purchase-controller'
-import { Validation } from '../../../protocols'
 import { badRequest } from '../../../helpers/http/http-helpers'
 
 const makeFakeRequest = (): HttpRequest => ({
@@ -24,17 +23,29 @@ const makeValidation = (): Validation => {
   return new ValidationStub()
 }
 
+const makeAddPurchase = (): AddPurchase => {
+  class AddPurchaseStub implements AddPurchase {
+    async add (data: AddAPurchaseModel): Promise<void> {
+      return new Promise(resolve => resolve())
+    }
+  }
+  return new AddPurchaseStub()
+}
+
 interface SutType {
   sut: AddPurchaseController
   validationStub: Validation
+  addPurchaseStub: AddPurchase
 }
 
 const makeSut = (): SutType => {
   const validationStub = makeValidation()
-  const sut = new AddPurchaseController(validationStub)
+  const addPurchaseStub = makeAddPurchase()
+  const sut = new AddPurchaseController(validationStub, addPurchaseStub)
   return {
     sut,
-    validationStub
+    validationStub,
+    addPurchaseStub
   }
 }
 
@@ -52,5 +63,13 @@ describe('AddSurvey Controller', () => {
     jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new Error())
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(badRequest(new Error()))
+  })
+
+  test('Should call AddPurchase with correct values', async () => {
+    const { sut, addPurchaseStub } = makeSut()
+    const addSpy = jest.spyOn(addPurchaseStub, 'add')
+    const httpRequest = makeFakeRequest()
+    await sut.handle(httpRequest)
+    expect(addSpy).toHaveBeenCalledWith(httpRequest.body)
   })
 })
