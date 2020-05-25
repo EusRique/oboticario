@@ -1,4 +1,14 @@
 import { PurchaseController } from './purchase-controller'
+import { HttpRequest } from '../../../protocols'
+
+const makeFakeRequest = (): HttpRequest => ({
+  body: {
+    code: 'any_value',
+    value: 'any_value',
+    cpf: 'any_cpf',
+    date: 'any_date'
+  }
+})
 
 interface SutTypes {
   sut: PurchaseController
@@ -66,5 +76,12 @@ describe('Purchase Controller', () => {
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.body).toEqual(new Error('Missing param: date'))
+  })
+
+  test('Should return 200 if valid data is provided', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse.statusCode).toBe(200)
+    expect(httpResponse.body).toEqual(makeFakeRequest())
   })
 })
