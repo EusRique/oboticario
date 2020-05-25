@@ -1,8 +1,11 @@
 import { Controller, HttpResponse, HttpRequest } from '../../../protocols'
 import { MissingParamError } from '../../../errors'
-import { badRequest } from '../../../helpers/http/http-helpers'
+import { badRequest, ok } from '../../../helpers/http/http-helpers'
+import { AddPurchase } from '../../../../domain/usecases/add-purchase'
 
 export class PurchaseController implements Controller {
+  constructor (private readonly addPurchase: AddPurchase) {}
+
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     const requiredField = ['code', 'value', 'cpf', 'date']
     for (const field of requiredField) {
@@ -10,17 +13,14 @@ export class PurchaseController implements Controller {
         return badRequest(new MissingParamError(field))
       }
     }
-    const purchase = {
-      body: {
-        code: 'any_value',
-        value: 'any_value',
-        cpf: 'any_cpf',
-        date: 'any_date'
-      }
-    }
-    return await {
-      statusCode: 200,
-      body: purchase
-    }
+    const { code, value, cpf, date } = httpRequest.body
+    const purchase = await this.addPurchase.add({
+      code,
+      value,
+      cpf,
+      date
+    })
+
+    return ok(purchase)
   }
 }
