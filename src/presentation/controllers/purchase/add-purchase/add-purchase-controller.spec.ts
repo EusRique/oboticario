@@ -1,6 +1,6 @@
 import { HttpRequest, Validation, AddPurchase, AddAPurchaseModel } from './add-purchase-controller-protocols'
 import { AddPurchaseController } from './add-purchase-controller'
-import { badRequest, serverError } from '../../../helpers/http/http-helpers'
+import { badRequest, serverError, noContent } from '../../../helpers/http/http-helpers'
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {
@@ -78,5 +78,11 @@ describe('AddSurvey Controller', () => {
     jest.spyOn(addPurchaseStub, 'add').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
+  test('Should return 204 on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(noContent())
   })
 })
