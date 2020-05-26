@@ -3,10 +3,10 @@ import { AddAPurchaseModel, AddPurchaseRepository } from './db-add-purchase-prot
 
 const makeFakePurchaseData = (): AddAPurchaseModel => ({
   code: 'any_code',
-  value: 'any_value',
+  value: 0,
   cpf: 'any_cpf',
-  percentage: 'any_percentage',
-  cashbackAmount: 'any_cashbackAmount',
+  percentage: 0,
+  cashbackAmount: 0,
   status: 'any_status',
   date: 'any_date'
 })
