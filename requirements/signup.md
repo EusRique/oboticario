@@ -24,3 +24,30 @@
 7. ✅ Retorna erro **500** se der erro ao tentar criar a conta do usuário
 8. ✅ Retorna erro **500** se der erro ao tentar gerar o token de acesso
 9. ✅ Retorna erro **500** se der erro ao tentar atualizar o usuário com o token de acesso gerado
+
+
+# Login
+> ## APIs relacionadas a Login
+
+POST api/signup API para criar conta de um usuário
+Essa rota pode ser executada por qualquer usuário
+
+```
+{
+  "name": "string",
+  "email": "string",
+  "cpf" : "string",
+  "password": "string",
+  "passwordConfirmation": "string"
+}
+
+O Retorno é um token para continuar para as outras rotas que precisam de autenticação
+
+```
+{
+  "accessToken": "string",
+  "name": "string"
+}
+
+```
+
