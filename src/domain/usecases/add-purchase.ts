@@ -1,11 +1,11 @@
 export interface AddAPurchaseModel {
   code: string
-  value: string
+  value: number
   cpf: string
-  percentage?: string
-  cashbackAmount?: string
-  status?: string
-  date?: string
+  percentage: number
+  cashbackAmount: number
+  status: string
+  date: string
 }
 
 export interface AddPurchase {
