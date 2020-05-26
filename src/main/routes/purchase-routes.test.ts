@@ -46,7 +46,7 @@ describe('Purchase Routes', () => {
         email: 'henrique@gmail.com',
         cpf: '000.000.000-00',
         password: '123',
-        role: 'user'
+        role: 'admin'
       })
       const id = res.ops[0]._id
       const accessToken = sign({ id }, env.jwtSecret)
