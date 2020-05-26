@@ -2,8 +2,11 @@ import request from 'supertest'
 import app from '../config/app'
 import { MongoHelper } from '../../infra/db/mongodb/helpers/mongo-helper'
 import { Collection } from 'mongodb'
+import { sign } from 'jsonwebtoken'
+import env from '../config/env'
 
 let purchaseCollection: Collection
+let accountCollection: Collection
 
 describe('Purchase Routes', () => {
   beforeAll(async () => {
@@ -17,6 +20,8 @@ describe('Purchase Routes', () => {
   beforeEach(async () => {
     purchaseCollection = await MongoHelper.getCollection('purchases')
     await purchaseCollection.deleteMany({})
+    accountCollection = await MongoHelper.getCollection('accounts')
+    await accountCollection.deleteMany({})
   })
 
   describe('POST /purchases', () => {
@@ -33,6 +38,38 @@ describe('Purchase Routes', () => {
           date: '2020-05-25'
         })
         .expect(403)
+    })
+
+    test('Should return 204 on add purchases with valid accessToken', async () => {
+      const res = await accountCollection.insertOne({
+        name: 'Henrique',
+        email: 'henrique@gmail.com',
+        cpf: '000.000.000-00',
+        password: '123',
+        role: 'user'
+      })
+      const id = res.ops[0]._id
+      const accessToken = sign({ id }, env.jwtSecret)
+      await accountCollection.updateOne({
+        _id: id
+      }, {
+        $set: {
+          accessToken
+        }
+      })
+      await request(app)
+        .post('/api/purchases')
+        .set('x-access-token', accessToken)
+        .send({
+          code: 'Amanda',
+          value: '100.00',
+          cpf: '000.000.000-00',
+          percentage: '15',
+          cashbackAmount: '10.00',
+          status: 'Em validação',
+          date: '2020-05-25'
+        })
+        .expect(204)
     })
   })
 })
