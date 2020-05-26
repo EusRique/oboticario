@@ -20,7 +20,7 @@ describe('Purchase Routes', () => {
   })
 
   describe('POST /purchases', () => {
-    test('Should return 204 on purchases success', async () => {
+    test('Should return 403 on add purchases with accessToken', async () => {
       await request(app)
         .post('/api/purchases')
         .send({
@@ -32,7 +32,7 @@ describe('Purchase Routes', () => {
           status: 'Em validação',
           date: '2020-05-25'
         })
-        .expect(204)
+        .expect(403)
     })
   })
 })
