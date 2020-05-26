@@ -25,10 +25,10 @@ describe('Purchase Mongo Repository', () => {
     const sut = makeSut()
     await sut.add({
       code: 'any_code',
-      value: 'any_value',
+      value: 0,
       cpf: 'any_cpf',
-      percentage: 'any_percentage',
-      cashbackAmount: 'any_cashbackAmount',
+      percentage: 0,
+      cashbackAmount: 0,
       status: 'any_status',
       date: 'any_date'
     })
