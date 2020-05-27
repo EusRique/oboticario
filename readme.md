@@ -45,6 +45,7 @@ Test CI para toda vez que dor feito um push
 1. [Cadastro](./requirements/signup.md)
 2. [Login](./requirements/login.md)
 3. [Adicionar uma compra](./requirements/purchase.md)
+4. [Listar todas as compras](./requirements/load-purchase.md)
 
 Checklist:
 ---
