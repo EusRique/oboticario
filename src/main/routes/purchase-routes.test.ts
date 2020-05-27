@@ -8,6 +8,26 @@ import env from '../config/env'
 let purchaseCollection: Collection
 let accountCollection: Collection
 
+const makeAccessToken = async (): Promise<string> => {
+  const res = await accountCollection.insertOne({
+    name: 'Henrique',
+    email: 'henrique@gmail.com',
+    cpf: '000.000.000-00',
+    password: '123',
+    role: 'admin'
+  })
+  const id = res.ops[0]._id
+  const accessToken = sign({ id }, env.jwtSecret)
+  await accountCollection.updateOne({
+    _id: id
+  }, {
+    $set: {
+      accessToken
+    }
+  })
+
+  return accessToken
+}
 describe('Purchase Routes', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
@@ -40,22 +60,7 @@ describe('Purchase Routes', () => {
     })
 
     test('Should return 204 on add purchases with valid accessToken', async () => {
-      const res = await accountCollection.insertOne({
-        name: 'Henrique',
-        email: 'henrique@gmail.com',
-        cpf: '000.000.000-00',
-        password: '123',
-        role: 'admin'
-      })
-      const id = res.ops[0]._id
-      const accessToken = sign({ id }, env.jwtSecret)
-      await accountCollection.updateOne({
-        _id: id
-      }, {
-        $set: {
-          accessToken
-        }
-      })
+      const accessToken = await makeAccessToken()
       await request(app)
         .post('/api/purchases')
         .set('x-access-token', accessToken)
@@ -79,34 +84,11 @@ describe('Purchase Routes', () => {
     })
   })
 
-  test('Should return 200 on add loadpurchases with valid accessToken', async () => {
-    const res = await accountCollection.insertOne({
-      name: 'Henrique',
-      email: 'henrique@gmail.com',
-      cpf: '000.000.000-00',
-      password: '123'
-    })
-    const id = res.ops[0]._id
-    const accessToken = sign({ id }, env.jwtSecret)
-    await accountCollection.updateOne({
-      _id: id
-    }, {
-      $set: {
-        accessToken
-      }
-    })
-    await purchaseCollection.insertMany([{
-      code: 'any_code',
-      value: 0,
-      cpf: 'any_cpf',
-      percentage: 0,
-      cashbackAmount: 0,
-      status: 'any_status',
-      date: new Date()
-    }])
+  test('Should return 204 on add loadpurchases with valid accessToken', async () => {
+    const accessToken = await makeAccessToken()
     await request(app)
       .get('/api/purchases')
       .set('x-access-token', accessToken)
-      .expect(200)
+      .expect(204)
   })
 })
