@@ -30,10 +30,10 @@ describe('Purchase Routes', () => {
         .post('/api/purchases')
         .send({
           code: 'Amanda',
-          value: '100.00',
+          value: 100.00,
           cpf: '000.000.000-00',
-          percentage: '15',
-          cashbackAmount: '10.00',
+          percentage: 15,
+          cashbackAmount: 10.00,
           status: 'Em validação'
         })
         .expect(403)
@@ -61,10 +61,10 @@ describe('Purchase Routes', () => {
         .set('x-access-token', accessToken)
         .send({
           code: 'Amanda',
-          value: '100.00',
+          value: 100.00,
           cpf: '000.000.000-00',
-          percentage: '15',
-          cashbackAmount: '10.00',
+          percentage: 15,
+          cashbackAmount: 10.00,
           status: 'Em validação'
         })
         .expect(204)

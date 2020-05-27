@@ -6,10 +6,10 @@ import mockdate from 'mockdate'
 const makeFakeRequest = (): HttpRequest => ({
   body: {
     code: 'any_value',
-    value: 'any_value',
+    value: 10,
     cpf: 'any_cpf',
-    percentage: 'any_percentage',
-    cashbackAmount: 'any_cashbackAmount',
+    percentage: 10,
+    cashbackAmount: 10,
     status: 'any_status',
     date: new Date()
   }
@@ -55,7 +55,7 @@ describe('AddSurvey Controller', () => {
     mockdate.set(new Date())
   })
 
-  beforeAll(() => {
+  afterAll(() => {
     mockdate.reset()
   })
 
