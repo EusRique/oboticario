@@ -5,7 +5,7 @@ export interface AddAPurchaseModel {
   percentage: number
   cashbackAmount: number
   status: string
-  date: string
+  date: Date
 }
 
 export interface AddPurchase {

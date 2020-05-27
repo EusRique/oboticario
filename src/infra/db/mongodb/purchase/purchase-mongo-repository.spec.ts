@@ -30,7 +30,7 @@ describe('Purchase Mongo Repository', () => {
       percentage: 0,
       cashbackAmount: 0,
       status: 'any_status',
-      date: 'any_date'
+      date: new Date()
     })
     const purchase = await purchaseCollection.findOne({ code: 'any_code' })
     expect(purchase).toBeTruthy()

@@ -13,7 +13,7 @@ export class AddPurchaseController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      const { code, value, cpf, percentage, cashbackAmount, status, date } = httpRequest.body
+      const { code, value, cpf, percentage, cashbackAmount, status } = httpRequest.body
       await this.addPurchase.add({
         code,
         value,
@@ -21,7 +21,7 @@ export class AddPurchaseController implements Controller {
         percentage,
         cashbackAmount,
         status,
-        date
+        date: new Date()
       })
       return noContent()
     } catch (error) {

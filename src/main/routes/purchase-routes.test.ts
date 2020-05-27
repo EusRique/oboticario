@@ -34,8 +34,7 @@ describe('Purchase Routes', () => {
           cpf: '000.000.000-00',
           percentage: '15',
           cashbackAmount: '10.00',
-          status: 'Em validação',
-          date: '2020-05-25'
+          status: 'Em validação'
         })
         .expect(403)
     })
@@ -66,8 +65,7 @@ describe('Purchase Routes', () => {
           cpf: '000.000.000-00',
           percentage: '15',
           cashbackAmount: '10.00',
-          status: 'Em validação',
-          date: '2020-05-25'
+          status: 'Em validação'
         })
         .expect(204)
     })

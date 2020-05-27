@@ -1,6 +1,7 @@
 import { HttpRequest, Validation, AddPurchase, AddAPurchaseModel } from './add-purchase-controller-protocols'
 import { AddPurchaseController } from './add-purchase-controller'
 import { badRequest, serverError, noContent } from '../../../helpers/http/http-helpers'
+import mockdate from 'mockdate'
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {
@@ -10,7 +11,7 @@ const makeFakeRequest = (): HttpRequest => ({
     percentage: 'any_percentage',
     cashbackAmount: 'any_cashbackAmount',
     status: 'any_status',
-    date: 'any_date'
+    date: new Date()
   }
 })
 
@@ -50,6 +51,14 @@ const makeSut = (): SutType => {
 }
 
 describe('AddSurvey Controller', () => {
+  beforeAll(() => {
+    mockdate.set(new Date())
+  })
+
+  beforeAll(() => {
+    mockdate.reset()
+  })
+
   test('Should call Validation with correct values', async () => {
     const { sut, validationStub } = makeSut()
     const validateSpy = jest.spyOn(validationStub, 'validate')

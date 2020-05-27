@@ -31,8 +31,7 @@ Key                     Value
 {
   "code": "string",
 	"value": "number",
-	"cpf": "string",
-	"date": "string"
+	"cpf": "string"
 }
 
 ```
@@ -46,6 +45,6 @@ O Retorno é um token para continuar para as outras rotas que precisam de autent
   "percentage": "20",
   "cashbackAmount": "391.15",
   "status": "Aprovado",
-  "date": "2020-05-26"
+  "date": "ISODate("YYYY-MM-DDT00:23:52.431Z""
 }
 ```

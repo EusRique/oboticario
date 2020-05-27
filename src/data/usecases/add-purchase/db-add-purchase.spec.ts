@@ -1,5 +1,6 @@
 import { DbAddPurchase } from './db-add-purchase'
 import { AddAPurchaseModel, AddPurchaseRepository } from './db-add-purchase-protocols'
+import mockdate from 'mockdate'
 
 const makeFakePurchaseData = (): AddAPurchaseModel => ({
   code: 'any_code',
@@ -8,7 +9,7 @@ const makeFakePurchaseData = (): AddAPurchaseModel => ({
   percentage: 0,
   cashbackAmount: 0,
   status: 'any_status',
-  date: 'any_date'
+  date: new Date()
 })
 
 const makeAddPurchaseRepository = (): AddPurchaseRepository => {
@@ -34,6 +35,13 @@ const makeSut = (): SutTypes => {
 }
 
 describe('DbPurchase Usecase', () => {
+  beforeAll(() => {
+    mockdate.set(new Date())
+  })
+
+  beforeAll(() => {
+    mockdate.reset()
+  })
   test('Should call AddPurchaseRepository with corrects values', async () => {
     const { sut, addPurchaseRepositoryStub } = makeSut()
     const addSpy = jest.spyOn(addPurchaseRepositoryStub, 'add')
