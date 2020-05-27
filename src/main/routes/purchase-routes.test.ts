@@ -78,4 +78,35 @@ describe('Purchase Routes', () => {
         .expect(403)
     })
   })
+
+  test('Should return 200 on add loadpurchases with valid accessToken', async () => {
+    const res = await accountCollection.insertOne({
+      name: 'Henrique',
+      email: 'henrique@gmail.com',
+      cpf: '000.000.000-00',
+      password: '123'
+    })
+    const id = res.ops[0]._id
+    const accessToken = sign({ id }, env.jwtSecret)
+    await accountCollection.updateOne({
+      _id: id
+    }, {
+      $set: {
+        accessToken
+      }
+    })
+    await purchaseCollection.insertMany([{
+      code: 'any_code',
+      value: 0,
+      cpf: 'any_cpf',
+      percentage: 0,
+      cashbackAmount: 0,
+      status: 'any_status',
+      date: new Date()
+    }])
+    await request(app)
+      .get('/api/purchases')
+      .set('x-access-token', accessToken)
+      .expect(200)
+  })
 })
