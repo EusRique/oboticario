@@ -24,6 +24,29 @@ const makeFakePurchases = (): PurchaseModel[] => {
   }]
 }
 
+interface SutTypes {
+  sut: LoadPurchaseController
+  loadPurchasesStub: LoadPurchases
+}
+
+const makeLoadPurchases = (): LoadPurchases => {
+  class LoadPurchasesStub implements LoadPurchases {
+    async load (): Promise<PurchaseModel[]> {
+      return new Promise(resolve => resolve(makeFakePurchases()))
+    }
+  }
+  return new LoadPurchasesStub()
+}
+
+const makeSut = (): SutTypes => {
+  const loadPurchasesStub = makeLoadPurchases()
+  const sut = new LoadPurchaseController(loadPurchasesStub)
+  return {
+    sut,
+    loadPurchasesStub
+  }
+}
+
 describe('LoadPurchase Controller', () => {
   beforeAll(() => {
     mockdate.set(new Date())
@@ -33,14 +56,8 @@ describe('LoadPurchase Controller', () => {
     mockdate.reset()
   })
   test('Should call Purchase', async () => {
-    class LoadPurchaseStub implements LoadPurchases {
-      async load (): Promise<PurchaseModel[]> {
-        return new Promise(resolve => resolve(makeFakePurchases()))
-      }
-    }
-    const loadPurchaseStub = new LoadPurchaseStub()
-    const loadSpy = jest.spyOn(loadPurchaseStub, 'load')
-    const sut = new LoadPurchaseController(loadPurchaseStub)
+    const { sut, loadPurchasesStub } = makeSut()
+    const loadSpy = jest.spyOn(loadPurchasesStub, 'load')
     await sut.handle({})
     expect(loadSpy).toHaveBeenCalled()
   })
