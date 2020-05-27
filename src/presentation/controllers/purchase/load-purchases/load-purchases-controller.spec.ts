@@ -1,6 +1,6 @@
 import { LoadPurchaseController } from './load-purchases-controller'
 import { PurchaseModel, LoadPurchases } from './load-purchases-controller-protocols'
-import { ok, serverError } from '../../../helpers/http/http-helpers'
+import { ok, serverError, noContent } from '../../../helpers/http/http-helpers'
 import mockdate from 'mockdate'
 
 const makeFakePurchases = (): PurchaseModel[] => {
@@ -67,6 +67,13 @@ describe('LoadPurchase Controller', () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle({})
     expect(httpResponse).toEqual(ok(makeFakePurchases()))
+  })
+
+  test('Should return  204 if Purchases returns empty', async () => {
+    const { sut, loadPurchasesStub } = makeSut()
+    jest.spyOn(loadPurchasesStub, 'load').mockReturnValueOnce(new Promise((resolve) => resolve([])))
+    const httpResponse = await sut.handle({})
+    expect(httpResponse).toEqual(noContent())
   })
 
   test('Should return 500 if AddPurchase throws', async () => {
