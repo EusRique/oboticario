@@ -24,17 +24,47 @@ const makeFakePurchases = (): PurchaseModel[] => {
   }]
 }
 
+const makeLoadPurchasesRepository = (): LoadPurchaseRepository => {
+  class LoadPurchasesRepositoryStub implements LoadPurchaseRepository {
+    async loadAll (): Promise<PurchaseModel[]> {
+      return new Promise(resolve => resolve(makeFakePurchases()))
+    }
+  }
+  return new LoadPurchasesRepositoryStub()
+}
+
+interface SutTypes {
+  sut: DbLoadPurchases
+  loadPurchasesRepositoryStub: LoadPurchaseRepository
+}
+const makeSut = (): SutTypes => {
+  const loadPurchasesRepositoryStub = makeLoadPurchasesRepository()
+  const sut = new DbLoadPurchases(loadPurchasesRepositoryStub)
+
+  return {
+    sut,
+    loadPurchasesRepositoryStub
+  }
+}
+
 describe('DbLoadPurchases', () => {
   test('Should call LoadPurchasesRepository', async () => {
-    class LoadPurchasesRepositoryStub implements LoadPurchaseRepository {
-      async loadAll (): Promise<PurchaseModel[]> {
-        return new Promise(resolve => resolve(makeFakePurchases()))
-      }
-    }
-    const loadPurchasesRepositoryStub = new LoadPurchasesRepositoryStub()
+    const { sut, loadPurchasesRepositoryStub } = makeSut()
     const loadAllSpy = jest.spyOn(loadPurchasesRepositoryStub, 'loadAll')
-    const sut = new DbLoadPurchases(loadPurchasesRepositoryStub)
     await sut.load()
     expect(loadAllSpy).toHaveBeenCalled()
+  })
+
+  test('Should return a list of Purchases on success', async () => {
+    const { sut } = makeSut()
+    const purchases = await sut.load()
+    expect(purchases).toEqual(makeFakePurchases())
+  })
+
+  test('Should throw if LoadPurchasesRepository throws', async () => {
+    const { sut, loadPurchasesRepositoryStub } = makeSut()
+    jest.spyOn(loadPurchasesRepositoryStub, 'loadAll').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    const promise = sut.load()
+    await expect(promise).rejects.toThrow()
   })
 })
