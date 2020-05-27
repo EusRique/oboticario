@@ -1,6 +1,7 @@
 import { LoadPurchaseRepository } from '../../protocols/db/purchase/load-purchase-repository'
 import { PurchaseModel } from '../../../domain/models/purchase'
 import { DbLoadPurchases } from './load.purchases'
+import mockdate from 'mockdate'
 
 const makeFakePurchases = (): PurchaseModel[] => {
   return [{
@@ -48,6 +49,13 @@ const makeSut = (): SutTypes => {
 }
 
 describe('DbLoadPurchases', () => {
+  beforeAll(() => {
+    mockdate.set(new Date())
+  })
+
+  afterAll(() => {
+    mockdate.reset()
+  })
   test('Should call LoadPurchasesRepository', async () => {
     const { sut, loadPurchasesRepositoryStub } = makeSut()
     const loadAllSpy = jest.spyOn(loadPurchasesRepositoryStub, 'loadAll')
