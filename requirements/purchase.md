@@ -16,7 +16,7 @@
 3.  ✅ Retorna erro **500** se der erro ao tentar criar a compra
 
 # Adicionar uma compra
-> ## APIs relacionadas a Login
+> ## APIs relacionadas a adicionar compra
 
 POST api/purchases API para cadastrar uma compra
 Essa rota só pode ser executada por usuários autenticados e no header da requisição deve conter o token para acesso
