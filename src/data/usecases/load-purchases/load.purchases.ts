@@ -6,7 +6,7 @@ export class DbLoadPurchases implements LoadPurchases {
   constructor (private readonly loadPurchasesRepository: LoadPurchaseRepository) {}
 
   async load (): Promise<PurchaseModel[]> {
-    await this.loadPurchasesRepository.loadAll()
-    return []
+    const purchases = await this.loadPurchasesRepository.loadAll()
+    return purchases
   }
 }
