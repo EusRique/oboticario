@@ -25,6 +25,7 @@ Exemplo no Postman em Headers passar exatemente conforme abaixo
 ```
 Key                     Value
 "x-access-token"        "seu_token"
+"Content-Type"          "application/json"
 ```
 
 ```
