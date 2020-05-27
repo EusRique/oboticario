@@ -1,5 +1,6 @@
 import { LoadPurchaseController } from './load-purchases-controller'
 import { PurchaseModel, LoadPurchases } from './load-purchases-controller-protocols'
+import { ok } from '../../../helpers/http/http-helpers'
 import mockdate from 'mockdate'
 
 const makeFakePurchases = (): PurchaseModel[] => {
@@ -60,5 +61,11 @@ describe('LoadPurchase Controller', () => {
     const loadSpy = jest.spyOn(loadPurchasesStub, 'load')
     await sut.handle({})
     expect(loadSpy).toHaveBeenCalled()
+  })
+
+  test('Should return  200 on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle({})
+    expect(httpResponse).toEqual(ok(makeFakePurchases()))
   })
 })
