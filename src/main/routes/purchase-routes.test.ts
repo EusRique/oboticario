@@ -70,4 +70,12 @@ describe('Purchase Routes', () => {
         .expect(204)
     })
   })
+
+  describe('GET /purchases', () => {
+    test('Should return 403 on load purchases with accessToken', async () => {
+      await request(app)
+        .get('/api/purchases')
+        .expect(403)
+    })
+  })
 })
