@@ -5,8 +5,8 @@ import { LoadPurchaseRepository } from '../../protocols/db/purchase/load-purchas
 export class DbLoadPurchases implements LoadPurchases {
   constructor (private readonly loadPurchasesRepository: LoadPurchaseRepository) {}
 
-  async load (): Promise<PurchaseModel[]> {
-    const purchases = await this.loadPurchasesRepository.loadAll()
+  async load (cpf: string): Promise<PurchaseModel[]> {
+    const purchases = await this.loadPurchasesRepository.loadAll(cpf)
     return purchases
   }
 }

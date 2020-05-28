@@ -10,9 +10,9 @@ export class PurchaseMongoRepository implements AddPurchaseRepository, LoadPurch
     await purchaseCollection.insertOne(purchaseData)
   }
 
-  async loadAll (): Promise<PurchaseModel[]> {
+  async loadAll (cpf: string): Promise<PurchaseModel[]> {
     const purchaseCollection = await MongoHelper.getCollection('purchases')
-    const purchases: PurchaseModel[] = await purchaseCollection.find().toArray()
+    const purchases: PurchaseModel[] = await purchaseCollection.find({ cpf }).toArray()
     return purchases
   }
 }

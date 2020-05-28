@@ -1,5 +1,5 @@
 import { PurchaseModel } from '../models/purchase'
 
 export interface LoadPurchases {
-  load (): Promise<PurchaseModel[]>
+  load (cpf: string): Promise<PurchaseModel[]>
 }
