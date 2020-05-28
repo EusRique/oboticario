@@ -52,14 +52,14 @@ describe('Purchase Mongo Repository', () => {
       }, {
         code: 'other_code',
         value: 0,
-        cpf: 'other_cpf',
+        cpf: 'any_cpf',
         percentage: 0,
         cashbackAmount: 0,
         status: 'other_status',
         date: new Date()
       }])
       const sut = makeSut()
-      const purchase = await sut.loadAll()
+      const purchase = await sut.loadAll('any_cpf')
       expect(purchase.length).toBe(2)
       expect(purchase[0].code).toBe('any_code')
       expect(purchase[1].code).toBe('other_code')
@@ -67,7 +67,7 @@ describe('Purchase Mongo Repository', () => {
 
     test('Should load empty list', async () => {
       const sut = makeSut()
-      const purchase = await sut.loadAll()
+      const purchase = await sut.loadAll('any_cpf')
       expect(purchase.length).toBe(0)
     })
   })

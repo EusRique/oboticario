@@ -59,20 +59,20 @@ describe('DbLoadPurchases', () => {
   test('Should call LoadPurchasesRepository', async () => {
     const { sut, loadPurchasesRepositoryStub } = makeSut()
     const loadAllSpy = jest.spyOn(loadPurchasesRepositoryStub, 'loadAll')
-    await sut.load()
+    await sut.load('any_cpf')
     expect(loadAllSpy).toHaveBeenCalled()
   })
 
   test('Should return a list of Purchases on success', async () => {
     const { sut } = makeSut()
-    const purchases = await sut.load()
+    const purchases = await sut.load('any_cpf')
     expect(purchases).toEqual(makeFakePurchases())
   })
 
   test('Should throw if LoadPurchasesRepository throws', async () => {
     const { sut, loadPurchasesRepositoryStub } = makeSut()
     jest.spyOn(loadPurchasesRepositoryStub, 'loadAll').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
-    const promise = sut.load()
+    const promise = sut.load('any_cpf')
     await expect(promise).rejects.toThrow()
   })
 })
