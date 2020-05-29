@@ -1,4 +1,5 @@
 export interface AddAPurchaseModel {
+  accountId: string
   code: string
   value: number
   cpf: string

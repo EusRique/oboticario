@@ -5,8 +5,8 @@ export class LoadPurchaseController implements Controller {
   constructor (private readonly loadPurchases: LoadPurchases) {}
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const cpf = '153.509.460-56'
-      const purchases = await this.loadPurchases.load(cpf)
+      const accountId = httpRequest.accountId
+      const purchases = await this.loadPurchases.load(accountId)
       return purchases.length ? ok(purchases) : noContent()
     } catch (error) {
       return serverError(error)

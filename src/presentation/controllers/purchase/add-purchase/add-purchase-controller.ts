@@ -13,8 +13,10 @@ export class AddPurchaseController implements Controller {
       if (error) {
         return badRequest(error)
       }
+      const accountId = httpRequest.accountId
       const { code, value, cpf, percentage, cashbackAmount, status } = httpRequest.body
       await this.addPurchase.add({
+        accountId,
         code,
         value,
         cpf,
