@@ -3,6 +3,7 @@ import { AddAPurchaseModel, AddPurchaseRepository } from './db-add-purchase-prot
 import mockdate from 'mockdate'
 
 const makeFakePurchaseData = (): AddAPurchaseModel => ({
+  accountId: 'any_code',
   code: 'any_code',
   value: 0,
   cpf: 'any_cpf',
