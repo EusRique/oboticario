@@ -1,6 +1,7 @@
 import { MongoHelper } from '../helpers/mongo-helper'
 import { PurchaseMongoRepository } from './purchase-mongo-repository'
 import { Collection } from 'mongodb'
+import faker from 'faker'
 
 let purchaseCollection: Collection
 
@@ -26,6 +27,7 @@ describe('Purchase Mongo Repository', () => {
     test('Should add a purchase on sucess', async () => {
       const sut = makeSut()
       await sut.add({
+        accountId: faker.random.uuid(),
         code: 'any_code',
         value: 0,
         cpf: 'any_cpf',
@@ -43,6 +45,7 @@ describe('Purchase Mongo Repository', () => {
     test('Should load all purchase on sucess', async () => {
       await purchaseCollection.insertMany([{
         code: 'any_code',
+        accountId: 'any_accountId',
         value: 0,
         cpf: 'any_cpf',
         percentage: 0,
@@ -51,6 +54,7 @@ describe('Purchase Mongo Repository', () => {
         date: new Date()
       }, {
         code: 'other_code',
+        accountId: 'any_accountId',
         value: 0,
         cpf: 'any_cpf',
         percentage: 0,
@@ -59,7 +63,7 @@ describe('Purchase Mongo Repository', () => {
         date: new Date()
       }])
       const sut = makeSut()
-      const purchase = await sut.loadAll('any_cpf')
+      const purchase = await sut.loadAll('any_accountId')
       expect(purchase.length).toBe(2)
       expect(purchase[0].code).toBe('any_code')
       expect(purchase[1].code).toBe('other_code')
