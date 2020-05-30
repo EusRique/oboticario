@@ -5,7 +5,12 @@ import { UpdatePurchase, UpdatePurchaseModel } from '../../../../domain/usecases
 import { badRequest, serverError, noContent } from '../../../helpers/http/http-helpers'
 
 const makeFakeRequest = (): HttpRequest => ({
+  params: {
+    purchaseId: 'any_purchasedId'
+  },
   body: {
+    purchaseId: 'any_purchasedId',
+    accountId: 'any_accountId',
     code: 'any_code',
     value: 10,
     cpf: 'any_cpf',
@@ -13,7 +18,8 @@ const makeFakeRequest = (): HttpRequest => ({
     cashbackAmount: 10,
     status: 'any_status',
     date: new Date()
-  }
+  },
+  accountId: 'any_accountId'
 })
 
 const makeValidation = (): Validation => {
