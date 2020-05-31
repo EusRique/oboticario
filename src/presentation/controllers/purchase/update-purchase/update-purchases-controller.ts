@@ -16,7 +16,6 @@ export class UpdatePurchaseController implements Controller {
         return badRequest(error)
       }
       const { purchaseId } = httpRequest.params
-      console.log(purchaseId)
       const accountId = httpRequest.accountId
       const { code, value, cpf, percentage, cashbackAmount, status } = httpRequest.body
       await this.updatePurchases.update({
