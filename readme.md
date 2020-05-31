@@ -45,7 +45,8 @@ Test CI para toda vez que dor feito um push
 1. [Cadastro](./requirements/signup.md)
 2. [Login](./requirements/login.md)
 3. [Adicionar uma compra](./requirements/purchase.md)
-4. [Listar todas as compras](./requirements/load-purchase.md)
+4. [Listar todas as compras de um cliente](./requirements/load-purchase.md)
+5. [Atualizar a compra de um cliente](./requirements/update-purchase.md)
 
 Checklist:
 ---
@@ -54,6 +55,7 @@ Checklist:
 - [x] Utilizado MongoDB
 - [x] Testes unitário;
 - [x] Teste de integração;
+- [x] Teste de CI/CD;
 - [x] Autenticação por JWT;
 - [x] Logs;
 

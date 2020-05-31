@@ -36,7 +36,7 @@ Key                     Value
 }
 
 ```
-O Retorno é um token para continuar para as outras rotas que precisam de autenticação
+O Retorno da rota
 
 ```
 {
