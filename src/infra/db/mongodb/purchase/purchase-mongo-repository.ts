@@ -48,6 +48,6 @@ export class PurchaseMongoRepository implements AddPurchaseRepository, LoadPurch
 
   async remove (data: RemovePurchaseModel): Promise<void> {
     const purchaseCollection = await MongoHelper.getCollection('purchases')
-    await purchaseCollection.deleteOne({ _id: new ObjectId(data.id) })
+    await purchaseCollection.deleteOne({ _id: data.id })
   }
 }
