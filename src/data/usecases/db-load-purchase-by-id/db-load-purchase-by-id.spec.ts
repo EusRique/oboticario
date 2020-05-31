@@ -45,7 +45,7 @@ describe('DbLoadPurchaseByid Usecase', () => {
     mockdate.set(new Date())
   })
 
-  beforeAll(() => {
+  afterAll(() => {
     mockdate.reset()
   })
   test('Should call LoadPurcaseById', async () => {
