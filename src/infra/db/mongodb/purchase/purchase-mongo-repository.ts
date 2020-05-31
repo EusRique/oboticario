@@ -6,8 +6,9 @@ import { PurchaseModel } from '../../../../domain/models/purchase'
 import { UpdatePurchaseRepository } from '../../../../data/protocols/db/purchase/update-purchase-repository'
 import { UpdatePurchaseModel } from '../../../../domain/usecases/update-purchases'
 import { ObjectId } from 'mongodb'
+import { LoadPurchaseByIdRepository } from '../../../../data/protocols/db/purchase/load-purchase-by-id-repository'
 
-export class PurchaseMongoRepository implements AddPurchaseRepository, LoadPurchaseRepository, UpdatePurchaseRepository {
+export class PurchaseMongoRepository implements AddPurchaseRepository, LoadPurchaseRepository, UpdatePurchaseRepository, LoadPurchaseByIdRepository {
   async add (purchaseData: AddAPurchaseModel): Promise<void> {
     const purchaseCollection = await MongoHelper.getCollection('purchases')
     await purchaseCollection.insertOne(purchaseData)
@@ -35,5 +36,11 @@ export class PurchaseMongoRepository implements AddPurchaseRepository, LoadPurch
         date: purchaseData.date
       }
     })
+  }
+
+  async loadById (id: string): Promise<PurchaseModel> {
+    const purchaseCollection = await MongoHelper.getCollection('purchases')
+    const purchase = await purchaseCollection.findOne({ _id: new ObjectId(id) })
+    return purchase && MongoHelper.map(purchase)
   }
 }
