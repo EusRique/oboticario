@@ -7,8 +7,10 @@ import { UpdatePurchaseRepository } from '../../../../data/protocols/db/purchase
 import { UpdatePurchaseModel } from '../../../../domain/usecases/update-purchases'
 import { ObjectId } from 'mongodb'
 import { LoadPurchaseByIdRepository } from '../../../../data/protocols/db/purchase/load-purchase-by-id-repository'
+import { RemovePurchaseRepository } from '../../../../data/protocols/db/purchase/remove-purchase-by-id'
+import { RemovePurchaseModel } from '../../../../domain/usecases/remove-purchase-by-id'
 
-export class PurchaseMongoRepository implements AddPurchaseRepository, LoadPurchaseRepository, UpdatePurchaseRepository, LoadPurchaseByIdRepository {
+export class PurchaseMongoRepository implements AddPurchaseRepository, LoadPurchaseRepository, UpdatePurchaseRepository, LoadPurchaseByIdRepository, RemovePurchaseRepository {
   async add (purchaseData: AddAPurchaseModel): Promise<void> {
     const purchaseCollection = await MongoHelper.getCollection('purchases')
     await purchaseCollection.insertOne(purchaseData)
@@ -42,5 +44,10 @@ export class PurchaseMongoRepository implements AddPurchaseRepository, LoadPurch
     const purchaseCollection = await MongoHelper.getCollection('purchases')
     const purchase = await purchaseCollection.findOne({ _id: new ObjectId(id) })
     return purchase && MongoHelper.map(purchase)
+  }
+
+  async remove (data: RemovePurchaseModel): Promise<void> {
+    const purchaseCollection = await MongoHelper.getCollection('purchases')
+    await purchaseCollection.deleteOne({ _id: new ObjectId(data.id) })
   }
 }

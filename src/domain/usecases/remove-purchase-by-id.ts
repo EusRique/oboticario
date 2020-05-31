@@ -1,4 +1,4 @@
-export interface PurchaseModel {
+export interface RemovePurchaseModel {
   id: string
   accountId: string
   code: string
@@ -8,4 +8,8 @@ export interface PurchaseModel {
   cashbackAmount: number
   status: string
   date: Date
+}
+
+export interface RemovePurchase {
+  remove (data: RemovePurchaseModel): Promise<void>
 }
