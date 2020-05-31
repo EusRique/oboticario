@@ -6,6 +6,7 @@ import mockdate from 'mockdate'
 const makeFakePurchases = (): PurchaseModel[] => {
   return [{
     id: 'any_id',
+    accountId: 'any_string',
     code: 'any_value',
     value: 100,
     cpf: 'any_cpf',
@@ -15,6 +16,7 @@ const makeFakePurchases = (): PurchaseModel[] => {
     date: new Date()
   }, {
     id: 'any_id',
+    accountId: 'any_string',
     code: 'any_value',
     value: 200,
     cpf: 'any_cpf',
