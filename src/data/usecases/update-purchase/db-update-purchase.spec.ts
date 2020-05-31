@@ -52,7 +52,7 @@ describe('DbPurchase Usecase', () => {
     expect(addSpy).toHaveBeenCalledWith(purchaseData)
   })
 
-  test('Should call UpdatePurchaseRepository with corrects values', async () => {
+  test('Should throw if UpdatePurchaseRepository throws', async () => {
     const { sut, updatePurchaseRepositoryStub } = makeSut()
     jest.spyOn(updatePurchaseRepositoryStub, 'update').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
     const promise = sut.update(makeFakePurchaseData())
