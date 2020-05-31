@@ -127,6 +127,48 @@ describe('Purchase Routes', () => {
         .expect(204)
     })
   })
+
+  describe('DELETE /purchases/:purchaseId', () => {
+    test('Should return 403 on delete purchase result without accessToken', async () => {
+      await request(app)
+        .delete('/api/purchases/:purchaseId')
+        .send({
+          code: '123',
+          value: 100.00,
+          cpf: '000.000.000-00',
+          percentage: 15,
+          cashbackAmount: 10.00,
+          status: 'Em validação'
+        })
+        .expect(403)
+    })
+
+    test('Should return 204 on delete purchases with valid accessToken', async () => {
+      const accessToken = await makeAccessToken()
+      const res = await updatePurchaseCollection.insertOne({
+        code: 'Amanda',
+        value: 100.00,
+        cpf: '000.000.000-00',
+        percentage: 15,
+        cashbackAmount: 10.00,
+        status: 'Em validação',
+        date: new Date()
+      })
+      await request(app)
+        .put(`/api/purchases/${res.ops[0]._id}`)
+        .set('x-access-token', accessToken)
+        .send({
+          code: 'Amanda',
+          value: 100.00,
+          cpf: '000.000.000-00',
+          percentage: 15,
+          cashbackAmount: 10.00,
+          status: 'Em validação',
+          date: new Date()
+        })
+        .expect(204)
+    })
+  })
   test('Should return 204 on add loadpurchases with valid accessToken', async () => {
     const accessToken = await makeAccessToken()
     await request(app)
