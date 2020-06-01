@@ -34,7 +34,7 @@ export class PurchaseMongoRepository implements AddPurchaseRepository, LoadPurch
         cpf: purchaseData.cpf,
         percentage: purchaseData.percentage,
         cashbackAmount: purchaseData.cashbackAmount,
-        status: purchaseData.cpf,
+        status: purchaseData.status,
         date: purchaseData.date
       }
     })
