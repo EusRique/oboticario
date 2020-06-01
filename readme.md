@@ -47,6 +47,7 @@ Test CI para toda vez que dor feito um push
 3. [Adicionar uma compra](./requirements/purchase.md)
 4. [Listar todas as compras de um cliente](./requirements/load-purchase.md)
 5. [Atualizar a compra de um cliente](./requirements/update-purchase.md)
+6. [Remover uma compra de um cliente](./requirements/remove-purchase.md)
 
 Checklist:
 ---
